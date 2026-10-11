@@ -6,6 +6,7 @@
 - 本机 Tingting 生成中文测试 WAV：24 kHz、单声道、14.135708 秒、678592 bytes。
 - 7 项 Node 测试通过：嘴形有声/静音、元音差异与范围、20 ms 麦克风分包且不回放输入、播放开始/结束回执、取消待播放与过期音频、网络空隙不误报完成。测试只证明这些客户端逻辑，不证明真实全双工通话成功。
 - 界面、Live2D 接线、wLipSync、官方 Gateway SDK 与流式音频接线已写入，Node 语法检查通过；尚未浏览器集成验收。
+- Chrome 154 真实 Web Audio 测试通过（`tests/browser-audio.mjs`）：解码本机 WAV 并实际走输出音频图，分析器测得有声能量、嘴形打开；取消后输出 RMS=0、嘴形=0，回执为 started→cancelled。证据在 `artifacts/browser-audio.json`。这验证音频图，不包含 Live2D 渲染或 Qwen 云端。
 
 ## 当前外部状态与失败
 
@@ -13,6 +14,7 @@
 - 人物/口型 profile 尚未下载，npm 依赖尚未安装，不能声称 Live2D 已显示。
 - Gateway 实际启动失败：冻结仓库沿用的 node_modules 缺 `yaml`（frontend-openapi-adapter 的依赖）。尚未更改共享依赖，也未连接真实 Qwen 会话。
 - 当前没有正在运行的客户端服务；没有产生 Qwen 通话验证结果。
+- 本轮复核 npm HTTPS 仍连接重置。系统代理配置为本机 7890；未修改系统网络/代理设置。官方冻结代码与沿用依赖存在版本缺口，不用替换旧服务或随意降级依赖来掩盖。
 
 ## 下次继续
 

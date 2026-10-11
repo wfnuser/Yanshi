@@ -21,6 +21,8 @@ Gateway 日志 `.runtime/gateway.log`，配置/数据也在 `.runtime/`，不覆
 
 `npm run demo-audio` 可独立、离线生成 `public/audio/demo.wav`。点击“播放测试音频”不调用云端；点击“开始对话”才申请麦克风并连接云端；结束后停止麦克风和会话。建议使用耳机。
 
+`npm run test:audio` 在本机 Chrome 中验证真实 WAV 解码、播放能量驱动嘴形、取消后输出静音及回执，不调用云端。它不等同于人物渲染或真实通话测试。可通过 `PLAYWRIGHT_MODULE` 指定已有 Playwright 的绝对模块路径。
+
 ## 实现边界
 
 - wLipSync 为浏览器本地 WASM/MFCC 元音匹配，不需要 GPU，不是神经网络精确唇形模型。提供音量开合对照。

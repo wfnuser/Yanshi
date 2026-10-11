@@ -1,24 +1,26 @@
 # 当前进展（2026-10-11）
 
-## 已有实际证据
+## 已验证
 
-- 新项目与独立 feature 分支创建；没有改动 Qwen 官方源文件或其他实验仓库。
-- 本机 Tingting 生成中文测试 WAV：24 kHz、单声道、14.135708 秒、678592 bytes。
-- 7 项 Node 测试通过：嘴形有声/静音、元音差异与范围、20 ms 麦克风分包且不回放输入、播放开始/结束回执、取消待播放与过期音频、网络空隙不误报完成。测试只证明这些客户端逻辑，不证明真实全双工通话成功。
-- 界面、Live2D 接线、wLipSync、官方 Gateway SDK 与流式音频接线已写入，Node 语法检查通过；尚未浏览器集成验收。
-- Chrome 154 真实 Web Audio 测试通过（`tests/browser-audio.mjs`）：解码本机 WAV 并实际走输出音频图，分析器测得有声能量、嘴形打开；取消后输出 RMS=0、嘴形=0，回执为 started→cancelled。证据在 `artifacts/browser-audio.json`。这验证音频图，不包含 Live2D 渲染或 Qwen 云端。
+- Live2D 官方 Hiyori 在桌面与 390px 手机布局正常显示。模型固定上游 `b1de66b0b1f1cb881d95fb6158622aeb6a2827bd`；各资产来源、大小、SHA256 在 `artifacts/assets.json`。
+- 本机 Tingting 生成 14.135708 秒中文 WAV；wLipSync 本地 MFCC/WASM 元音辅助驱动嘴形，停止后嘴形归零；也可切换音量开合对照。
+- 9 项 Node 测试通过；Chrome 真实 Web Audio 解码、取消静音与回执测试通过；UI 渲染与移动布局验证通过。构建成功，npm audit 报告 0 项漏洞。
+- 真实 Qwen Realtime（已配置 `qwen-audio-3.0-realtime-plus`）连接成功。使用正常客户端 AudioWorklet、重采样、WebSocket 路径注入本地合成 PCM，不伪造 Gateway 事件：助手介绍太阳系期间，送入“等一下，先停下，请只回答好的”。旧回复收到原生取消；新回复为“好的。”，有实际播放完成回执。
+- 完整插话验证轨迹：416 个输入包、24 个输出包；输出播放期间仍发送了 169 个输入包；无背压丢包。结束时嘴形为 0。包数不是对话轮数，也不是性能基准。
+- 证据：`artifacts/browser-audio.json`、`browser-ui.json`、`realtime-barge-in.json` 与对应截图。早期失败记录保留，不把连接失败算通过。
 
-## 当前外部状态与失败
+## 本轮修正
 
-- npm install 反复 ECONNRESET；对 npm、镜像和 raw.githubusercontent.com 的 HTTPS 请求也被连接重置。直接连接尝试超时。停止了明确属于本项目、持续重试的 npm 进程，没有重复启动。
-- 人物/口型 profile 尚未下载，npm 依赖尚未安装，不能声称 Live2D 已显示。
-- Gateway 实际启动失败：冻结仓库沿用的 node_modules 缺 `yaml`（frontend-openapi-adapter 的依赖）。尚未更改共享依赖，也未连接真实 Qwen 会话。
-- 当前没有正在运行的客户端服务；没有产生 Qwen 通话验证结果。
-- 本轮复核 npm HTTPS 仍连接重置。系统代理配置为本机 7890；未修改系统网络/代理设置。官方冻结代码与沿用依赖存在版本缺口，不用替换旧服务或随意降级依赖来掩盖。
+1. 恢复网络后安装素材与依赖；Vite ES2022 配置支持 wLipSync 顶层 await。
+2. 代理保留浏览器 Host，使官方 Gateway 同源校验正常工作，没有关闭安全校验。
+3. 官方冻结 Gateway 沿用旧 node_modules，缺少 yaml/qrcode；从本应用依赖解析，不改第三方源码或旧服务。
+4. Node WebSocket 未沿用系统代理导致连接超时。仅该 Gateway 的 realtime provider 接入显式代理 Agent，复用已有本机代理；不改系统网络设置。
+5. 插话早期 ASR 会暂时携带前一轮 ID。客户端不再让这类 partial 覆盖已经 final 的历史文本。
 
-## 下次继续
+## 使用与边界
 
-1. 检查网络是否恢复，安装依赖及官方人物资产；用独立依赖方案补齐冻结 Gateway，不干扰原服务。
-2. 构建并启动；浏览器实测人物、嘴形、中文 WAV，修正真实集成问题。
-3. 实际 Qwen 实时会话：验证麦克风音频收取、助手声音播放、输出时输入仍发送、插话清空输出；保存不含密钥的证据。
-4. 完成来源、启动与限制说明，打开工作台。只有上述实测成立才能完成 goal。
+- `npm start` 同时启动独立 Gateway 8786 与工作台 8785；只有点击“开始对话”才获取真人麦克风并连接云端。“结束对话”释放麦克风与连接。
+- 口型分析本地执行，无额外口型 API；不是精确中文音素/唇读模型。真人噪声、回声、听感与长时间使用未做系统评测，建议戴耳机。
+- Qwen-Audio-Agent 固定 `f6dd0e3703d58e4941159c1be89447f3fcb5063a`，初版 backend=none，只做实时语音人物工作台，不执行代码或后台任务。
+- 当前收音启用时连续发送 PCM，包括安静时段；不能据此声称等待免费。静音或结束后停止发送。
+- 素材仅用于本地演示；Hiyori、Cubism Core 与其他组件遵循独立许可，商业发布前须核对。

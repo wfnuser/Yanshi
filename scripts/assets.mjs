@@ -14,7 +14,7 @@ async function download(url, path) {
   console.log(path, data.length);
   return data;
 }
-const sha=JSON.parse(execFileSync('curl',['-fsSL','--max-time','30','https://api.github.com/repos/Live2D/CubismWebSamples/commits/develop'],{encoding:'utf8'})).sha;
+const sha='b1de66b0b1f1cb881d95fb6158622aeb6a2827bd';
 const base=`https://raw.githubusercontent.com/Live2D/CubismWebSamples/${sha}/Samples/Resources/Hiyori/`;
 const model=JSON.parse(await download(base+'Hiyori.model3.json','models/Hiyori/Hiyori.model3.json'));
 const refs=model.FileReferences;

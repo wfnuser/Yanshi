@@ -8,13 +8,23 @@
     "demo-audio": "node scripts/demo-audio.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:audio": "node tests/browser-audio.mjs",
+    "test:ui": "node tests/browser-ui.mjs",
+    "test:realtime": "node tests/browser-realtime.mjs",
     "build": "vite build"
   },
   "dependencies": {
-    "pixi.js": "6.5.10",
+    "https-proxy-agent": "^7.0.6",
     "pixi-live2d-display": "0.4.0",
+    "pixi.js": "6.5.10",
+    "qrcode": "^1.5.4",
+    "vite": "6.4.4",
     "wlipsync": "1.3.1",
-    "vite": "6.4.1"
+    "yaml": "^2.9.0"
   },
-  "devDependencies": {"playwright": "1.58.2"}
+  "devDependencies": {
+    "playwright": "1.58.2"
+  },
+  "overrides": {
+    "gh-pages": "6.1.1"
+  }
 }

@@ -7,3 +7,6 @@ execFileSync('say', ['-v', 'Tingting', '-r', '165', '-o', resolve(directory, 'de
   '你好，我是你的语音搭档。我们来试一试嘴形。啊，衣，乌，诶，哦。泡泡，妈妈，苹果和葡萄。你可以随时打断我，我会停下来听你说。']);
 execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', resolve(directory, 'demo.aiff'), '-ar', '24000', '-ac', '1', resolve(directory, 'demo.wav')]);
 console.log('Local Mandarin demo audio:', resolve(directory, 'demo.wav'));
+execFileSync('say', ['-v', 'Tingting', '-r', '170', '-o', resolve(directory, 'interrupt.aiff'),
+  '等一下，先停下。请只回答好的。']);
+execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', resolve(directory, 'interrupt.aiff'), '-ar', '48000', '-ac', '1', resolve(directory, 'interrupt.wav')]);

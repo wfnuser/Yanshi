@@ -63,8 +63,8 @@ async function loadAvatar() {
     const resize = () => {
       const stage = document.querySelector('.stage'); pixi.renderer.resize(stage.clientWidth, stage.clientHeight);
       avatar.scale.set(1); const natural = avatar.height;
-      avatar.scale.set(stage.clientHeight * .96 / natural);
-      avatar.position.set(stage.clientWidth * .59, stage.clientHeight + 36);
+      avatar.scale.set(stage.clientHeight * 1.6 / natural);
+      avatar.position.set(stage.clientWidth * .59, stage.clientHeight * 1.52);
     };
     new ResizeObserver(resize).observe(document.querySelector('.stage')); resize();
     avatar.internalModel.on('beforeModelUpdate', () => {
@@ -80,6 +80,9 @@ async function loadAvatar() {
 function transcript(event) {
   const key = `${event.role}:${event.responseId || event.turnId || 'current'}`;
   let row = rows.get(key);
+  // Early input ASR can carry the previous turn ID until server VAD opens
+  // the new turn. Never let that partial overwrite a finalized utterance.
+  if (row?.final && event.type === 'transcript.delta') return;
   if (!row) {
     $('empty')?.remove(); const element = document.createElement('article'); element.className = `message ${event.role}`;
     const title = document.createElement('strong'); title.textContent = event.role === 'user' ? '你' : 'Hiyori';
@@ -88,6 +91,7 @@ function transcript(event) {
   }
   if (event.type === 'transcript.discard') { row.element.remove(); rows.delete(key); return; }
   row.text = event.type === 'transcript.final' || event.replace ? event.content || '' : row.text + (event.content || '');
+  row.final = event.type === 'transcript.final';
   row.body.textContent = row.text;
   $('messages').scrollTop = $('messages').scrollHeight;
 }

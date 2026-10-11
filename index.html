@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>在听 · 角色语音工作台</title>
+<script src="/vendor/live2dcubismcore.min.js"></script></head>
+<body>
+  <header><a class="brand" href="/">在听<span>角色语音工作台</span></a><span id="connection" role="status">未连接</span></header>
+  <main>
+    <section class="stage" aria-label="Live2D 角色">
+      <div class="stage-heading"><h1>想说什么，<br>直接开口。</h1><p>她说话时，你也可以插话。</p></div>
+      <canvas id="avatar" aria-label="Hiyori 动态人物"></canvas>
+      <div id="avatar-loading" role="status">正在准备 Hiyori…</div>
+      <div class="character-label"><span class="dot"></span>Hiyori <small>Live2D</small></div>
+      <div class="mouth-state"><span id="speech-state">安静待命</span><meter id="mouth-meter" min="0" max="1" value="0" aria-label="嘴形开合"></meter></div>
+    </section>
+    <aside>
+      <section class="conversation"><h2>这次对话</h2><p class="hint">实时转录是辅助文字，不等同于实际播放内容。</p><div id="messages" role="log" aria-live="polite"><p id="empty">连接后自然说话。建议戴耳机，减少扬声器回声。</p></div></section>
+      <form id="text-form"><label class="sr-only" for="text-input">也可以输入文字</label><input id="text-input" placeholder="也可以输入一句话…" disabled><button id="send" disabled>发送</button></form>
+      <section class="demo"><h2>先试试口型</h2><p>本机生成的普通话音频，不连接云端。</p><div class="row"><button id="demo">播放测试音频</button><label>嘴形<select id="lip-mode"><option value="vowel">元音辅助</option><option value="rms">音量开合</option></select></label></div><p id="lip-status" class="hint">元音分析在浏览器本地运行。</p></section>
+    </aside>
+  </main>
+  <footer><div class="controls"><button id="connect" class="primary">开始对话</button><button id="mute" disabled>麦克风静音</button><button id="interrupt">停下，听我说</button><button id="disconnect" disabled>结束对话</button></div><div id="error" role="alert" hidden></div>
+    <details><summary>连接与素材说明</summary><p>语音接入本机 Qwen-Audio-Agent Gateway；云端调用使用服务器已有凭据，不向浏览器暴露。结束对话会关闭麦克风和连接。</p><p>口型跟随实际播放音频，不跟随文字预测。元音辅助是轻量 MFCC 匹配，不是精确中文音素模型；Hiyori 只有嘴形开合与形状两类参数。</p><p>人物：<a href="https://github.com/Live2D/CubismWebSamples" target="_blank" rel="noreferrer">Live2D 官方 Hiyori</a>；口型：<a href="https://github.com/mrxz/wLipSync" target="_blank" rel="noreferrer">wLipSync</a>。仅本地演示，素材与 Cubism Core 遵循各自许可。</p><pre id="diagnostics">尚未开始</pre></details>
+  </footer>
+  <script type="module" src="/src/main.mjs"></script>
+</body></html>

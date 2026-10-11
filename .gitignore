@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.runtime/
+public/vendor/
+public/models/
+public/audio/
+public/profile.json
+artifacts/
+.env*

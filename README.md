@@ -1,12 +1,14 @@
 # Yanshi · 偃师
 
-一个基于 [Qwen-Audio-Agent](https://github.com/QwenAudio/qwen-audio-agent) + Live2D 的数字人 demo，支持实时语音对话、插话和音频驱动口型。
+A digital avatar demo built with [Qwen-Audio-Agent](https://github.com/QwenAudio/qwen-audio-agent) and Live2D, with real-time voice chat, interruption support, and audio-driven lip sync.
 
-名字取自《列子》中的工匠偃师（Yǎn Shī）。
+Named after Yanshi, the legendary craftsman in the *Liezi* who created a lifelike automaton.
 
-## 配置与启动
+## Quick start
 
-需要 **Node.js 24.15+**、npm、Git 和 curl；目前在 macOS + Chrome 上验证。
+Requires **Node.js 24.15+**, npm, Git, and curl. Tested on macOS with Chrome.
+
+### 1. Install Yanshi
 
 ```sh
 git clone https://github.com/wfnuser/Yanshi.git
@@ -15,7 +17,19 @@ npm ci
 cp .env.example .env
 ```
 
-按 [安装说明](docs/setup.md#1-qwen-源码依赖) 下载固定版本的 Qwen-Audio-Agent，然后编辑本项目的 `.env`：
+### 2. Install Qwen-Audio-Agent
+
+Run these commands from the Yanshi directory. Use a fresh checkout; the pinned revision is the tested version.
+
+```sh
+git clone https://github.com/QwenAudio/qwen-audio-agent.git ../_vendor/voice-agents/qwen-audio-agent
+git -C ../_vendor/voice-agents/qwen-audio-agent checkout f6dd0e3703d58e4941159c1be89447f3fcb5063a
+npm ci --prefix ../_vendor/voice-agents/qwen-audio-agent --ignore-scripts
+```
+
+### 3. Configure
+
+Edit Yanshi's `.env` and replace `your-own-key` with your DashScope API key:
 
 ```dotenv
 QWEN_AUDIO_AGENT_DIR=../_vendor/voice-agents/qwen-audio-agent
@@ -24,17 +38,23 @@ QWEN_AUDIO_REALTIME_PROVIDER=dashscope
 QWEN_AUDIO_REALTIME_MODEL=qwen-audio-3.0-realtime-plus
 ```
 
-阅读并接受 [第三方素材条款](THIRD_PARTY_NOTICES.md) 后，下载 Live2D 素材并启动：
+If Qwen-Audio-Agent is installed elsewhere, change `QWEN_AUDIO_AGENT_DIR` accordingly. Do not commit your API key.
+
+### 4. Download assets and run
+
+Review the [third-party terms](THIRD_PARTY_NOTICES.md) before running the asset download command:
 
 ```sh
 npm run assets -- --accept-third-party-terms
 npm start
 ```
 
-打开 **http://127.0.0.1:8785**，点击“开始对话”并允许麦克风。建议戴耳机；实时模型调用可能计费。当前 demo 未启用后台任务执行。
+Open [http://127.0.0.1:8785](http://127.0.0.1:8785). Click **开始对话** (Start conversation) and allow microphone access. Headphones are recommended. Cloud API usage may incur charges.
 
-仅展示人物、播放本地音频可用 `npm run dev`，不需要 API Key。依赖安装、可选测试音频、代理和开发测试见 [安装说明](docs/setup.md)。
+This demo runs voice chat only; backend task execution is disabled. For the avatar UI without live chat, use `npm run dev` instead; no API key is needed, but the Qwen source and Live2D assets are still required.
 
-## 许可
+See the [setup guide (Chinese)](docs/setup.md) for proxy settings, optional test audio, and development commands.
 
-自有代码采用 [Apache-2.0](LICENSE)。Live2D Core、Hiyori 等第三方素材不随仓库分发，遵循各自许可，详见 [第三方说明](THIRD_PARTY_NOTICES.md)。
+## License
+
+Our code is licensed under [Apache-2.0](LICENSE). Live2D Core, Hiyori, and other third-party assets are not bundled and remain subject to their [own licenses](THIRD_PARTY_NOTICES.md).

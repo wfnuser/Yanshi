@@ -11,8 +11,7 @@ Bug reports should include the commit, OS/browser/Node versions, reproduction st
 redacted errors. Do not upload API keys, private conversations, whole `.runtime/` directories
 or third-party model assets. Synthetic audio is preferred for reproducible reports.
 
-Discuss new backends, renderers or major product changes in an issue first. We intend to
-keep the Qwen adapter small rather than fork its agent runtime. See [roadmap](docs/roadmap.md).
+For substantial changes, open an issue first.
 
 Contributions must be yours to submit and compatible with Apache-2.0; third-party additions
 must retain their own notices. No contribution grants rights to Live2D assets or voices.

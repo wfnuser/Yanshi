@@ -14,7 +14,7 @@ git -C ../_vendor/voice-agents/qwen-audio-agent checkout f6dd0e3703d58e4941159c1
 npm ci --prefix ../_vendor/voice-agents/qwen-audio-agent --ignore-scripts
 ```
 
-这里只运行 Node Gateway，不运行 Electron，不需要构建上游桌面应用。安装仍会解析上游 workspace 依赖，首次可能较慢。如果只运行 `npm run dev` / build，本应用只需要上游源码；实时 Gateway 才需要它的服务端依赖。
+这里只运行 Node Gateway，不运行 Electron，不需要构建上游桌面应用。安装仍会解析上游 workspace 依赖，首次可能较慢。如果只运行 `npm run dev` / build，本应用只需要上游源码（SDK 的 zod 由 Yanshi 显式提供）；实时 Gateway 才需要它的服务端依赖。
 
 在 Yanshi 的 `.env` 中设置：
 

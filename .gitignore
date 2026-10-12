@@ -7,3 +7,7 @@ public/audio/
 public/profile.json
 artifacts/
 .env*
+!.env.example
+.DS_Store
+*.log
+.deps/

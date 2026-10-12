@@ -1,4 +1,4 @@
-import WebSocket from '../../_vendor/voice-agents/qwen-audio-agent/node_modules/ws/wrapper.mjs';
+import WebSocket from 'ws';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { withProxy } from './proxy.mjs';
 

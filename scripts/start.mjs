@@ -1,7 +1,10 @@
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import { mkdirSync, openSync } from 'node:fs';
+import { loadProjectEnv, resolveQwen } from './config.mjs';
 const root=resolve(import.meta.dirname,'..');
+loadProjectEnv(root);
+resolveQwen(root);
 mkdirSync(resolve(root,'.runtime'),{recursive:true});
 const log=openSync(resolve(root,'.runtime/gateway.log'),'a',0o600);
 const gateway=spawn(process.execPath,['scripts/gateway.mjs'],{cwd:root,stdio:['ignore',log,log]});
@@ -11,4 +14,4 @@ function stop(){if(stopping)return;stopping=true;gateway.kill('SIGTERM');web.kil
 for(const s of ['SIGINT','SIGTERM']) process.on(s,stop);
 gateway.on('exit',(code)=>{if(!stopping){console.error('Gateway exited:',code,'See .runtime/gateway.log');stop();process.exitCode=code||1;}});
 web.on('exit',(code)=>{if(!stopping){stop();process.exitCode=code||1;}});
-console.log('角色工作台 http://127.0.0.1:8785 · Gateway http://127.0.0.1:8786');
+console.log('Yanshi · 偃师 http://127.0.0.1:8785 · Gateway http://127.0.0.1:8786');

@@ -123,7 +123,7 @@ async function connect() {
     client = new GatewayClient({
       url: `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/api/realtime?sessionId=avatar-${crypto.randomUUID()}`,
       createSocket: url => new WebSocket(url),
-      clientType: 'web', clientLabel: 'Live2D 工作台', clientInstanceId: crypto.randomUUID(), reconnect: false,
+      clientType: 'web', clientLabel: 'Yanshi · 偃师', clientInstanceId: crypto.randomUUID(), reconnect: false,
       capabilities: ['input.audio', 'input.text', 'playback.receipts', 'session.heartbeat'],
       locale: 'zh-CN', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       configure: () => ({ voiceEnabled: true, inputEnabled: true, outputEnabled: true, textOnly: false }),
@@ -173,7 +173,7 @@ $('text-form').onsubmit = event => {
 $('demo').onclick = async () => {
   try {
     error(''); await audio(); stopPlayback('demo_restart');
-    const response = await fetch('/audio/demo.wav'); if (!response.ok) throw new Error('请先运行 npm run assets 生成测试音频');
+    const response = await fetch('/audio/demo.wav'); if (!response.ok) throw new Error('请运行 npm run demo-audio（macOS），或自行提供 public/audio/demo.wav');
     const buffer = await ctx.decodeAudioData(await response.arrayBuffer());
     demoId = `demo-${crypto.randomUUID()}`; player.append(buffer.getChannelData(0), buffer.sampleRate, demoId); player.done(demoId);
   } catch (e) { error(e.message); }

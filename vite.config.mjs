@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'node:path';
-const qwen=resolve(import.meta.dirname,'../_vendor/voice-agents/qwen-audio-agent-upstream-f6dd0e3');
+import { loadProjectEnv, resolveQwen } from './scripts/config.mjs';
+loadProjectEnv(import.meta.dirname);
+const qwen=resolveQwen(import.meta.dirname);
 export default defineConfig({
   build:{target:'es2022'},
   optimizeDeps:{esbuildOptions:{target:'es2022'}},

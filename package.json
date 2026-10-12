@@ -1,9 +1,21 @@
 {
-  "name": "avatar-voice-workbench",
+  "name": "yanshi",
+  "version": "0.1.0",
+  "description": "A Live2D voice companion powered by Qwen-Audio-Agent.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wfnuser/Yanshi.git"
+  },
+  "engines": {
+    "node": ">=24.15.0",
+    "npm": ">=10"
+  },
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node scripts/start.mjs",
+    "dev": "vite --host 127.0.0.1 --port 8785 --strictPort",
     "assets": "node scripts/assets.mjs",
     "demo-audio": "node scripts/demo-audio.mjs",
     "test": "node --test tests/*.test.mjs",
@@ -19,6 +31,7 @@
     "qrcode": "^1.5.4",
     "vite": "6.4.4",
     "wlipsync": "1.3.1",
+    "ws": "8.21.3",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
